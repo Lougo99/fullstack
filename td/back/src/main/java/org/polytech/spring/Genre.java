@@ -1,3 +1,4 @@
+package org.polytech.spring;
 public enum Genre {
     ACTION,
     COMEDY,
