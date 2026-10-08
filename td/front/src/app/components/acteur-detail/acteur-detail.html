@@ -1,1 +1,31 @@
-<p>acteur-detail works!</p>
+<section>
+  @if (erreur(); as message) {
+    <p class="erreur">
+      {{ message }}
+    </p>
+  }
+
+  @if (acteur(); as acteur) {
+    <h2>
+      {{ acteur.prenom }} {{ acteur.nom }}
+    </h2>
+
+    <h3>Films auxquels il ou elle a participé</h3>
+
+    <ul>
+      @for (film of films(); track film.id) {
+        <li>
+          <a [routerLink]="['/films', film.id]">
+            {{ film.titre }}
+          </a>
+        </li>
+      } @empty {
+        <li>Aucun film associé à cet acteur.</li>
+      }
+    </ul>
+
+    <a routerLink="/acteurs">
+      Retour aux acteurs
+    </a>
+  }
+</section>

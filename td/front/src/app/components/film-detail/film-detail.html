@@ -38,18 +38,57 @@
 
     <h3>Acteurs associés</h3>
 
-    @if (film.acteursIds?.length) {
-      <ul>
-        @for (acteurId of film.acteursIds; track acteurId) {
-          <li>Acteur n°{{ acteurId }}</li>
+    <ul>
+      @for (acteur of acteursAssocies(); track acteur.id) {
+        <li>
+          <a [routerLink]="['/acteurs', acteur.id]">
+            {{ acteur.prenom }} {{ acteur.nom }}
+          </a>
+
+          <button
+            type="button"
+            class="danger"
+            (click)="dissocier(acteur)">
+            Dissocier
+          </button>
+        </li>
+      } @empty {
+        <li>Aucun acteur associé à ce film.</li>
+      }
+    </ul>
+
+    <h3>Associer un acteur</h3>
+
+    @if (acteursDisponibles().length > 0) {
+      <select
+        [ngModel]="acteurSelectionne()"
+        (ngModelChange)="acteurSelectionne.set($event)">
+
+        <option [ngValue]="null">
+          -- Sélectionner un acteur --
+        </option>
+
+        @for (acteur of acteursDisponibles(); track acteur.id) {
+          <option [ngValue]="acteur.id">
+            {{ acteur.prenom }} {{ acteur.nom }}
+          </option>
         }
-      </ul>
+      </select>
+
+      <button
+        type="button"
+        [disabled]="acteurSelectionne() === null"
+        (click)="associer()">
+        Associer
+      </button>
     } @else {
-      <p>Aucun acteur associé à ce film.</p>
+      <p>Tous les acteurs disponibles sont déjà associés.</p>
     }
 
-    <a routerLink="/films">
-      Retour à la liste
-    </a>
+    <p>
+      <a routerLink="/films">
+        Retour à la liste
+      </a>
+    </p>
   }
 </section>

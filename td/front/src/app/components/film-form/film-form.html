@@ -1,1 +1,89 @@
-<p>film-form works!</p>
+<section>
+  <h2>
+    @if (edition()) {
+      Modifier un film
+    } @else {
+      Ajouter un film
+    }
+  </h2>
+
+  @if (erreur(); as message) {
+    <p class="erreur">
+      {{ message }}
+    </p>
+  }
+
+  <form
+    #formulaire="ngForm"
+    (ngSubmit)="enregistrer()">
+
+    <label for="titre">
+      Titre
+    </label>
+
+    <input
+      id="titre"
+      name="titre"
+      [(ngModel)]="film.titre"
+      required
+      minlength="2"
+      maxlength="200"
+      #titre="ngModel">
+
+    @if (titre.invalid && titre.touched) {
+      <small class="erreur">
+        Le titre est obligatoire et doit contenir au moins 2 caractères.
+      </small>
+    }
+
+    <label for="realisateur">
+      Réalisateur
+    </label>
+
+    <input
+      id="realisateur"
+      name="realisateur"
+      [(ngModel)]="film.realisateur"
+      required>
+
+    <label for="dateSortie">
+      Date de sortie
+    </label>
+
+    <input
+      id="dateSortie"
+      type="date"
+      name="dateSortie"
+      [(ngModel)]="film.dateSortie"
+      required>
+
+    <label for="genre">
+      Genre
+    </label>
+
+    <select
+      id="genre"
+      name="genre"
+      [(ngModel)]="film.genre"
+      required>
+
+      <option value="ACTION">Action</option>
+      <option value="COMEDY">Comédie</option>
+      <option value="DRAMA">Drame</option>
+      <option value="HORROR">Horreur</option>
+      <option value="ROMANCE">Romance</option>
+      <option value="SCI_FI">Science-fiction</option>
+      <option value="FANTASY">Fantastique</option>
+      <option value="THRILLER">Thriller</option>
+      <option value="DOCUMENTARY">Documentaire</option>
+    </select>
+
+    <div class="actions">
+      <button
+        type="submit"
+        [disabled]="formulaire.invalid">
+        Enregistrer
+      </button>
+    </div>
+  </form>
+</section>

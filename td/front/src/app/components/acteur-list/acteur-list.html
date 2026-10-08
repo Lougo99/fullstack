@@ -1,1 +1,23 @@
-<p>acteur-list works!</p>
+<section>
+  <h2>Acteurs</h2>
+
+  @if (erreur(); as message) {
+    <p class="erreur">
+      {{ message }}
+    </p>
+  }
+
+  @if (acteurs$ | async; as acteurs) {
+    <ul>
+      @for (acteur of acteurs; track acteur.id) {
+        <li>
+          <a [routerLink]="['/acteurs', acteur.id]">
+            {{ acteur.prenom }} {{ acteur.nom }}
+          </a>
+        </li>
+      } @empty {
+        <li>Aucun acteur enregistré.</li>
+      }
+    </ul>
+  }
+</section>

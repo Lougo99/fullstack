@@ -1,0 +1,15 @@
+form {
+  display: grid;
+  max-width: 42rem;
+  gap: 0.5rem;
+}
+
+input,
+select {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+}
+
+small.erreur {
+  margin-top: -0.5rem;
+}

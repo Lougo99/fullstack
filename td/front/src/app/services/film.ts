@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Acteur } from '../models/acteur.model';
 
 import {
   Film,
@@ -32,5 +33,29 @@ export class FilmService {
 
   supprimer(id: number): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`);
+  }
+  getActeurs(id: number): Observable<Acteur[]> {
+    return this.http.get<Acteur[]>(
+      `${this.url}/${id}/acteurs`
+    );
+  }
+
+  associerActeur(
+    filmId: number,
+    acteurId: number
+  ): Observable<void> {
+    return this.http.post<void>(
+      `${this.url}/${filmId}/acteurs/${acteurId}`,
+      {}
+    );
+  }
+
+  dissocierActeur(
+    filmId: number,
+    acteurId: number
+  ): Observable<void> {
+    return this.http.delete<void>(
+      `${this.url}/${filmId}/acteurs/${acteurId}`
+    );
   }
 }
