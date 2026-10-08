@@ -1,1 +1,32 @@
-<p>film-card works!</p>
+<article
+  class="film-card"
+  [class.ancien]="estAncien()">
+
+  <div>
+    <h3>
+      <a [routerLink]="['/films', film().id]">
+        {{ film().titre }}
+      </a>
+    </h3>
+
+    <p>
+      Réalisateur : {{ film().realisateur }}
+    </p>
+
+    <p>
+      Sortie :
+      {{ film().dateSortie | date: 'dd/MM/yyyy' }}
+    </p>
+
+    <p>
+      Genre : {{ film().genre }}
+    </p>
+  </div>
+
+  <button
+    type="button"
+    class="danger"
+    (click)="demanderSuppression()">
+    Supprimer
+  </button>
+</article>

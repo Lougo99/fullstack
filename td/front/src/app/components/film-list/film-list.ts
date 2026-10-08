@@ -4,23 +4,23 @@ import {
   signal
 } from '@angular/core';
 
-import {
-  AsyncPipe,
-  DatePipe
-} from '@angular/common';
-
+import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import {
+  catchError,
+  of
+} from 'rxjs';
 
-import { FilmService } from '../../services/film';
 import { Film } from '../../models/film.model';
+import { FilmService } from '../../services/film';
+import { FilmCard } from '../film-card/film-card';
 
 @Component({
   selector: 'app-film-list',
   imports: [
     AsyncPipe,
-    DatePipe,
-    RouterLink
+    RouterLink,
+    FilmCard
   ],
   templateUrl: './film-list.html',
   styleUrl: './film-list.css'
@@ -29,18 +29,39 @@ export class FilmList {
   private readonly service = inject(FilmService);
 
   erreur = signal<string | null>(null);
+  films$ = this.chargerFilms();
 
-  films$ = this.service.getAll().pipe(
-    catchError(() => {
-      this.erreur.set(
-        'Impossible de charger les films. Vérifiez que le backend est démarré.'
-      );
+  chargerFilms() {
+    return this.service.getAll().pipe(
+      catchError(() => {
+        this.erreur.set(
+          'Impossible de charger les films. Vérifiez que le backend est démarré.'
+        );
 
-      return of<Film[]>([]);
-    })
-  );
+        return of<Film[]>([]);
+      })
+    );
+  }
 
-  estAncien(film: Film): boolean {
-    return new Date(film.dateSortie).getFullYear() < 2000;
+  onSupprimer(film: Film): void {
+    const confirmation = window.confirm(
+      `Supprimer le film « ${film.titre} » ?`
+    );
+
+    if (!confirmation) {
+      return;
+    }
+
+    this.service.supprimer(film.id).subscribe({
+      next: () => {
+        this.erreur.set(null);
+        this.films$ = this.chargerFilms();
+      },
+      error: () => {
+        this.erreur.set(
+          `Impossible de supprimer « ${film.titre} ».`
+        );
+      }
+    });
   }
 }

@@ -1,0 +1,28 @@
+.film-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.75rem 0;
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  background: white;
+}
+
+.film-card.ancien {
+  border-left: 5px solid #a40000;
+}
+
+.film-card h3 {
+  margin-top: 0;
+}
+
+.danger {
+  align-self: start;
+  color: white;
+  background: #b91c1c;
+  border: 0;
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}

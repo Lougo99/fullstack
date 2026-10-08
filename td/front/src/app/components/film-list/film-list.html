@@ -2,7 +2,9 @@
   <div class="titre-page">
     <h2>Films</h2>
 
-    <a routerLink="/films/nouveau">
+    <a
+      class="bouton"
+      routerLink="/films/nouveau">
       Ajouter un film
     </a>
   </div>
@@ -14,21 +16,12 @@
   }
 
   @if (films$ | async; as films) {
-    <ul>
-      @for (film of films; track film.id) {
-        <li [class.ancien]="estAncien(film)">
-          <a [routerLink]="['/films', film.id]">
-            {{ film.titre }}
-          </a>
-
-          <span>
-            — {{ film.realisateur }}
-            — {{ film.dateSortie | date: 'dd/MM/yyyy' }}
-          </span>
-        </li>
-      } @empty {
-        <li>Aucun film enregistré.</li>
-      }
-    </ul>
+    @for (film of films; track film.id) {
+      <app-film-card
+        [film]="film"
+        (supprimer)="onSupprimer($event)" />
+    } @empty {
+      <p>Aucun film enregistré.</p>
+    }
   }
 </section>

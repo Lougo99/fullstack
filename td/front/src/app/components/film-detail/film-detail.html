@@ -1,1 +1,55 @@
-<p>film-detail works!</p>
+<section>
+  @if (erreur(); as message) {
+    <p class="erreur">
+      {{ message }}
+    </p>
+  }
+
+  @if (film(); as film) {
+    <div class="titre-page">
+      <h2>{{ film.titre }}</h2>
+
+      <div class="actions">
+        <a
+          class="bouton"
+          [routerLink]="['/films', film.id, 'modifier']">
+          Modifier
+        </a>
+
+        <button
+          type="button"
+          class="danger"
+          (click)="supprimer()">
+          Supprimer
+        </button>
+      </div>
+    </div>
+
+    <dl>
+      <dt>Réalisateur</dt>
+      <dd>{{ film.realisateur }}</dd>
+
+      <dt>Date de sortie</dt>
+      <dd>{{ film.dateSortie | date: 'dd/MM/yyyy' }}</dd>
+
+      <dt>Genre</dt>
+      <dd>{{ film.genre }}</dd>
+    </dl>
+
+    <h3>Acteurs associés</h3>
+
+    @if (film.acteursIds?.length) {
+      <ul>
+        @for (acteurId of film.acteursIds; track acteurId) {
+          <li>Acteur n°{{ acteurId }}</li>
+        }
+      </ul>
+    } @else {
+      <p>Aucun acteur associé à ce film.</p>
+    }
+
+    <a routerLink="/films">
+      Retour à la liste
+    </a>
+  }
+</section>
