@@ -1,0 +1,17 @@
+.ancien {
+  color: #a40000;
+  font-weight: bold;
+}
+
+.erreur {
+  color: #a40000;
+  border: 1px solid #a40000;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+.titre-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
