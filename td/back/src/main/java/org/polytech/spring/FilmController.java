@@ -25,34 +25,36 @@ public class FilmController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Film>> getAllFilms() {
+    public ResponseEntity<List<FilmDto>> getAllFilms() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Film> getFilmById(@PathVariable Long id) {
+    public ResponseEntity<FilmDto> getFilmById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Film> addFilm(@RequestBody Film film) {
-        Film savedFilm = service.save(film);
+    public ResponseEntity<FilmDto> addFilm(
+            @RequestBody FilmCreationDto filmDto) {
+
+        FilmDto savedFilm = service.save(filmDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedFilm.getId())
+                .buildAndExpand(savedFilm.id())
                 .toUri();
 
         return ResponseEntity.created(location).body(savedFilm);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Film> updateFilm(
+    public ResponseEntity<FilmDto> updateFilm(
             @PathVariable Long id,
-            @RequestBody Film film) {
+            @RequestBody FilmCreationDto filmDto) {
 
-        return ResponseEntity.ok(service.update(id, film));
+        return ResponseEntity.ok(service.update(id, filmDto));
     }
 
     @DeleteMapping("/{id}")

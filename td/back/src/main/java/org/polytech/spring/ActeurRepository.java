@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FilmRepository extends JpaRepository<Film, Long> {
+public interface ActeurRepository extends JpaRepository<Acteur, Long> {
 
-    List<Film> findByActeursId(Long acteurId);
+    List<Acteur> findByFilmsId(Long filmId);
 }

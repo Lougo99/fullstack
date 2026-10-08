@@ -7,39 +7,73 @@ import org.springframework.stereotype.Service;
 @Service
 public class FilmService {
 
-    private final FilmRepository repository;
+    private final FilmRepository filmRepository;
+    private final ActeurRepository acteurRepository;
+    private final FilmMapper filmMapper;
 
-    public FilmService(FilmRepository repository) {
-        this.repository = repository;
+    public FilmService(
+            FilmRepository filmRepository,
+            ActeurRepository acteurRepository,
+            FilmMapper filmMapper) {
+        this.filmRepository = filmRepository;
+        this.acteurRepository = acteurRepository;
+        this.filmMapper = filmMapper;
     }
 
-    public List<Film> findAll() {
-        return repository.findAll();
+    public List<FilmDto> findAll() {
+        return filmRepository.findAll()
+                .stream()
+                .map(filmMapper::toDto)
+                .toList();
     }
 
-    public Film findById(Long id) {
-        return repository.findById(id)
+    public FilmDto findById(Long id) {
+        Film film = filmRepository.findById(id)
                 .orElseThrow(() -> new FilmNotFoundException(id));
+
+        return filmMapper.toDto(film);
     }
 
-    public Film save(Film film) {
-        return repository.save(film);
+    public FilmDto save(FilmCreationDto dto) {
+        Film film = filmMapper.toEntity(dto);
+
+        if (dto.acteursIds() != null) {
+            film.setActeurs(
+                    acteurRepository.findAllById(dto.acteursIds())
+                            .stream()
+                            .collect(java.util.stream.Collectors.toSet())
+            );
+        }
+
+        Film savedFilm = filmRepository.save(film);
+        return filmMapper.toDto(savedFilm);
     }
 
-    public Film update(Long id, Film film) {
-        Film existingFilm = findById(id);
+    public List<FilmDto> findByActeur(Long acteurId) {
+        return filmRepository.findByActeursId(acteurId)
+                .stream()
+                .map(filmMapper::toDto)
+                .toList();
+    }
 
-        existingFilm.setTitre(film.getTitre());
-        existingFilm.setRealisateur(film.getRealisateur());
-        existingFilm.setDateSortie(film.getDateSortie());
-        existingFilm.setGenre(film.getGenre());
+    public List<Acteur> findActeursByFilm(Long filmId) {
+        return acteurRepository.findByFilmsId(filmId);
+    }
 
-        return existingFilm;
+    public FilmDto update(Long id, FilmCreationDto dto) {
+        Film film = filmRepository.findById(id)
+                .orElseThrow(() -> new FilmNotFoundException(id));
+
+        filmMapper.updateEntity(film, dto);
+
+        return filmMapper.toDto(filmRepository.save(film));
     }
 
     public void delete(Long id) {
-        if (!repository.deleteById(id)) {
+        if (!filmRepository.existsById(id)) {
             throw new FilmNotFoundException(id);
         }
+
+        filmRepository.deleteById(id);
     }
 }
