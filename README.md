@@ -71,3 +71,25 @@ requêtes séparées par `###`. `films.http` contient le squelette du TD 1.
 
 La régularité et la lisibilité des commits ainsi que la mise à jour du `README.md` sont
 prises en compte dans l'évaluation.
+
+## Lancement du code
+
+Il faut lancer le back :
+```bash
+cd td
+cd back
+.\gradlew bootRun
+```
+
+Ensuite on lance le front :
+
+```bash
+cd td
+cd front
+ng serve
+```
+
+Enfin on lance le site avec l'adresse suivante :
+
+http://localhost:4200/films
+
