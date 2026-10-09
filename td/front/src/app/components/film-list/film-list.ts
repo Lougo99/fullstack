@@ -19,7 +19,6 @@ import {toSignal} from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-film-list',
   imports: [
-    AsyncPipe,
     RouterLink,
     FilmCard
   ],
