@@ -67,6 +67,7 @@ export class FilmForm {
   }
 
   enregistrer(): void {
+    console.log('Formulaire envoyé :', this.film);
     const id = this.filmId();
 
     if (id === null) {
@@ -78,11 +79,13 @@ export class FilmForm {
   }
 
   creer(): void {
+    console.log('Création envoyée au service :', this.film);
     this.service.creer(this.film).subscribe({
       next: film => {
         this.router.navigate(['/films', film.id]);
       },
       error: error => {
+        console.error('Erreur POST :', error);
         this.erreur.set(
           error.error?.detail || 'Création impossible.'
         );

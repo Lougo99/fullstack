@@ -15,13 +15,11 @@
     </p>
   }
 
-  @if (films$ | async; as films) {
-    @for (film of films; track film.id) {
+    @for (film of (films$()); track film.id) {
       <app-film-card
         [film]="film"
         (supprimer)="onSupprimer($event)" />
     } @empty {
       <p>Aucun film enregistré.</p>
     }
-  }
 </section>

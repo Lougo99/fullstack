@@ -1,6 +1,6 @@
 import {
   Component,
-  inject,
+  inject, OnInit,
   signal
 } from '@angular/core';
 
@@ -14,6 +14,7 @@ import {
 import { Film } from '../../models/film.model';
 import { FilmService } from '../../services/film';
 import { FilmCard } from '../film-card/film-card';
+import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-film-list',
@@ -25,14 +26,18 @@ import { FilmCard } from '../film-card/film-card';
   templateUrl: './film-list.html',
   styleUrl: './film-list.css'
 })
-export class FilmList {
+export class FilmList implements OnInit{
   private readonly service = inject(FilmService);
 
   erreur = signal<string | null>(null);
-  films$ = this.chargerFilms();
+  films$ = signal<Film[]>([]);
+
+  ngOnInit() {
+    this.chargerFilms();
+  }
 
   chargerFilms() {
-    return this.service.getAll().pipe(
+    this.service.getAll().pipe(
       catchError(() => {
         this.erreur.set(
           'Impossible de charger les films. Vérifiez que le backend est démarré.'
@@ -40,7 +45,7 @@ export class FilmList {
 
         return of<Film[]>([]);
       })
-    );
+    ).subscribe(this.films$.set);
   }
 
   onSupprimer(film: Film): void {
@@ -54,8 +59,8 @@ export class FilmList {
 
     this.service.supprimer(film.id).subscribe({
       next: () => {
-        this.erreur.set(null);
-        this.films$ = this.chargerFilms();
+          this.erreur.set(null);
+          this.chargerFilms();
       },
       error: () => {
         this.erreur.set(

@@ -24,6 +24,7 @@
     <input
       id="titre"
       name="titre"
+      type="text"
       [(ngModel)]="film.titre"
       required
       minlength="2"
@@ -43,8 +44,16 @@
     <input
       id="realisateur"
       name="realisateur"
+      type="text"
       [(ngModel)]="film.realisateur"
-      required>
+      required
+      #realisateur="ngModel">
+
+    @if (realisateur.invalid && realisateur.touched) {
+      <small class="erreur">
+        Le réalisateur est obligatoire.
+      </small>
+    }
 
     <label for="dateSortie">
       Date de sortie
@@ -52,10 +61,17 @@
 
     <input
       id="dateSortie"
-      type="date"
       name="dateSortie"
+      type="date"
       [(ngModel)]="film.dateSortie"
-      required>
+      required
+      #dateSortie="ngModel">
+
+    @if (dateSortie.invalid && dateSortie.touched) {
+      <small class="erreur">
+        La date de sortie est obligatoire.
+      </small>
+    }
 
     <label for="genre">
       Genre
@@ -65,7 +81,8 @@
       id="genre"
       name="genre"
       [(ngModel)]="film.genre"
-      required>
+      required
+      #genre="ngModel">
 
       <option value="ACTION">Action</option>
       <option value="COMEDY">Comédie</option>
@@ -77,6 +94,12 @@
       <option value="THRILLER">Thriller</option>
       <option value="DOCUMENTARY">Documentaire</option>
     </select>
+
+    @if (genre.invalid && genre.touched) {
+      <small class="erreur">
+        Le genre est obligatoire.
+      </small>
+    }
 
     <div class="actions">
       <button
