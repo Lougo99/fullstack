@@ -4,7 +4,6 @@ import {
   signal
 } from '@angular/core';
 
-import { AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {
   catchError,
@@ -14,7 +13,6 @@ import {
 import { Film } from '../../models/film.model';
 import { FilmService } from '../../services/film';
 import { FilmCard } from '../film-card/film-card';
-import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-film-list',

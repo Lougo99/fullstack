@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import {
-  Film,
   FilmCreation
 } from '../../models/film.model';
 
